@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegas Open Houses - Saturday Feb 1</title>
+    <title>South Bay Open Houses - Saturday Feb 1</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         #map { height: 100vh; width: 100%; }
-        .property-popup { max-width: 280px; }
+        .property-popup { max-width: 300px; }
         .property-popup h3 { margin-bottom: 8px; color: #1a1a1a; font-size: 14px; }
         .property-popup .price { font-size: 18px; font-weight: bold; color: #2563eb; margin-bottom: 8px; }
         .property-popup .details { font-size: 13px; color: #666; margin-bottom: 8px; }
+        .property-popup .features { font-size: 12px; color: #888; margin-bottom: 8px; font-style: italic; }
         .property-popup .open-house { background: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; display: inline-block; margin-bottom: 8px; }
+        .property-popup .by-appt { background: #6366f1; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; display: inline-block; margin-bottom: 8px; }
         .property-popup a { color: #2563eb; text-decoration: none; font-size: 13px; }
         .property-popup a:hover { text-decoration: underline; }
         .legend { 
@@ -49,129 +51,78 @@
 </head>
 <body>
     <div class="header">
-        <h1>🏠 Vegas Open Houses</h1>
-        <span class="count">Saturday, Feb 1 • 10 properties</span>
+        <h1>🏠 South Bay Houses</h1>
+        <span class="count">Saturday, Feb 1 • 4 properties</span>
     </div>
     <div id="map"></div>
     <div class="legend">
-        <h4>Price Range</h4>
-        <div class="legend-item"><span class="legend-dot" style="background: #22c55e;"></span> Under $400K</div>
-        <div class="legend-item"><span class="legend-dot" style="background: #eab308;"></span> $400K - $500K</div>
-        <div class="legend-item"><span class="legend-dot" style="background: #f97316;"></span> $500K - $600K</div>
-        <div class="legend-item"><span class="legend-dot" style="background: #ef4444;"></span> Over $600K</div>
+        <h4>Open House</h4>
+        <div class="legend-item"><span class="legend-dot" style="background: #22c55e;"></span> Scheduled</div>
+        <div class="legend-item"><span class="legend-dot" style="background: #6366f1;"></span> By Appointment</div>
     </div>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         const properties = [
             {
-                address: "3008 Lakeside Falls Dr",
-                price: 415000,
-                beds: 3, baths: 2, sqft: 1571,
-                openHouse: "11am - 2pm",
-                lat: 36.0847, lng: -115.2847,
-                url: "https://www.redfin.com/NV/Las-Vegas/3008-Lakeside-Falls-Dr-89117/home/29065342"
-            },
-            {
-                address: "10809 Garden Mist Dr #2094",
-                price: 318000,
-                beds: 2, baths: 2, sqft: 1096,
-                openHouse: "10am - 2pm",
-                lat: 36.1789, lng: -115.2456,
-                url: "https://www.redfin.com/NV/Las-Vegas/10809-Garden-Mist-Dr-89135/unit-2094/home/29113456"
-            },
-            {
-                address: "9212 Whitekirk Pl",
-                price: 530000,
-                beds: 3, baths: 2, sqft: 1836,
-                openHouse: "12pm - 3pm",
-                lat: 36.1634, lng: -115.3178,
-                url: "https://www.redfin.com/NV/Las-Vegas/9212-Whitekirk-Pl-89145/home/29098765"
-            },
-            {
-                address: "8805 Jeffreys St #1046",
-                price: 290000,
-                beds: 2, baths: 2, sqft: 1189,
-                openHouse: "11am - 3pm",
-                lat: 36.1523, lng: -115.3234,
-                url: "https://www.redfin.com/NV/Las-Vegas/8805-Jeffreys-St-89149/unit-1046/home/29087654"
-            },
-            {
-                address: "7255 Sunset Rd #2116",
-                price: 270000,
-                beds: 2, baths: 2, sqft: 1052,
+                address: "1450 6th St, Manhattan Beach",
+                price: null,
+                beds: 6, baths: 5.5, sqft: 4537,
+                features: "Pool",
                 openHouse: "1pm - 4pm",
-                lat: 36.0712, lng: -115.2189,
-                url: "https://www.redfin.com/NV/Las-Vegas/7255-Sunset-Rd-89113/unit-2116/home/29076543"
+                byAppt: false,
+                lat: 33.8847, lng: -118.4033,
+                url: "https://www.redfin.com/CA/Manhattan-Beach/1450-6th-St-90266/home/6809051"
             },
             {
-                address: "2291 Horizon Ridge Pkwy #10152",
-                price: 315000,
-                beds: 2, baths: 2, sqft: 1230,
-                openHouse: "11am - 2pm",
-                lat: 36.0156, lng: -115.0834,
-                url: "https://www.redfin.com/NV/Henderson/2291-Horizon-Ridge-Pkwy-89052/unit-10152/home/29065678"
+                address: "1612 Gates Ave, Manhattan Beach",
+                price: null,
+                beds: 5, baths: 6, sqft: 5080,
+                features: "New construction 2025",
+                openHouse: "12pm - 4pm",
+                byAppt: false,
+                lat: 33.8892, lng: -118.4089,
+                url: "https://www.redfin.com/CA/Manhattan-Beach/1612-Gates-Ave-90266/home/6808234"
             },
             {
-                address: "1830 Buffalo Dr #2075",
-                price: 285000,
-                beds: 2, baths: 2, sqft: 1044,
-                openHouse: "12pm - 3pm",
-                lat: 36.1567, lng: -115.2567,
-                url: "https://www.redfin.com/NV/Las-Vegas/1830-Buffalo-Dr-89128/unit-2075/home/29054567"
+                address: "1806 6th St, Manhattan Beach",
+                price: null,
+                beds: 6, baths: null, sqft: null,
+                features: "New construction, no compromises",
+                openHouse: "By Appointment",
+                byAppt: true,
+                lat: 33.8873, lng: -118.4033,
+                url: "https://www.redfin.com/CA/Manhattan-Beach/1806-6th-St-90266/home/6809123"
             },
             {
-                address: "6868 Sky Pointe Dr #1088",
-                price: 340000,
-                beds: 3, baths: 2, sqft: 1312,
-                openHouse: "10am - 1pm",
-                lat: 36.2678, lng: -115.2456,
-                url: "https://www.redfin.com/NV/Las-Vegas/6868-Sky-Pointe-Dr-89131/unit-1088/home/29043567"
-            },
-            {
-                address: "10550 Alexander Rd #2127",
-                price: 359000,
-                beds: 3, baths: 2, sqft: 1456,
-                openHouse: "11am - 2pm",
-                lat: 36.2123, lng: -115.3012,
-                url: "https://www.redfin.com/NV/Las-Vegas/10550-Alexander-Rd-89129/unit-2127/home/29032456"
-            },
-            {
-                address: "917 Sable Chase Pl",
-                price: 489000,
-                beds: 3, baths: 2, sqft: 1678,
-                openHouse: "1pm - 4pm",
-                lat: 36.0234, lng: -115.1023,
-                url: "https://www.redfin.com/NV/Henderson/917-Sable-Chase-Pl-89011/home/29021345"
+                address: "1304 Blossom Ln, Redondo Beach",
+                price: null,
+                beds: null, baths: null, sqft: null,
+                features: null,
+                openHouse: "By Appointment",
+                byAppt: true,
+                lat: 33.8712, lng: -118.3856,
+                url: "https://www.redfin.com/CA/Redondo-Beach/1304-Blossom-Ln-90278/home/6798234"
             }
         ];
 
-        // Initialize map centered on Vegas
-        const map = L.map('map').setView([36.12, -115.20], 11);
+        // Initialize map centered on Manhattan Beach
+        const map = L.map('map').setView([33.882, -118.398], 14);
         
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Add padding for header
-        map.invalidateSize();
-        
-        function getPriceColor(price) {
-            if (price < 400000) return '#22c55e';
-            if (price < 500000) return '#eab308';
-            if (price < 600000) return '#f97316';
-            return '#ef4444';
-        }
-
         function formatPrice(price) {
-            return '$' + price.toLocaleString();
+            if (!price) return '';
+            return '$' + (price / 1000000).toFixed(2) + 'M';
         }
 
         properties.forEach(prop => {
-            const color = getPriceColor(prop.price);
+            const color = prop.byAppt ? '#6366f1' : '#22c55e';
             
             const marker = L.circleMarker([prop.lat, prop.lng], {
-                radius: 10,
+                radius: 12,
                 fillColor: color,
                 color: '#fff',
                 weight: 2,
@@ -179,12 +130,28 @@
                 fillOpacity: 0.9
             }).addTo(map);
 
+            let detailsHtml = '';
+            if (prop.beds || prop.baths || prop.sqft) {
+                const parts = [];
+                if (prop.beds) parts.push(prop.beds + ' bed');
+                if (prop.baths) parts.push(prop.baths + ' bath');
+                if (prop.sqft) parts.push(prop.sqft.toLocaleString() + ' sqft');
+                detailsHtml = `<div class="details">${parts.join(' • ')}</div>`;
+            }
+
+            let featuresHtml = prop.features ? `<div class="features">${prop.features}</div>` : '';
+            let priceHtml = prop.price ? `<div class="price">${formatPrice(prop.price)}</div>` : '';
+            
+            const openHouseClass = prop.byAppt ? 'by-appt' : 'open-house';
+            const openHouseIcon = prop.byAppt ? '📅' : '🕐';
+
             const popup = `
                 <div class="property-popup">
                     <h3>${prop.address}</h3>
-                    <div class="price">${formatPrice(prop.price)}</div>
-                    <div class="open-house">🕐 Open ${prop.openHouse}</div>
-                    <div class="details">${prop.beds} bed • ${prop.baths} bath • ${prop.sqft.toLocaleString()} sqft</div>
+                    ${priceHtml}
+                    <div class="${openHouseClass}">${openHouseIcon} ${prop.openHouse}</div>
+                    ${detailsHtml}
+                    ${featuresHtml}
                     <a href="${prop.url}" target="_blank">View on Redfin →</a>
                 </div>
             `;
@@ -192,7 +159,10 @@
             marker.bindPopup(popup);
         });
 
-        // Adjust for header
+        // Fit bounds to show all markers
+        const bounds = L.latLngBounds(properties.map(p => [p.lat, p.lng]));
+        map.fitBounds(bounds, { padding: [50, 50] });
+
         setTimeout(() => {
             map.invalidateSize();
         }, 100);
