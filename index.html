@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vegas Open Houses - Saturday Feb 1</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        #map { height: 100vh; width: 100%; }
+        .property-popup { max-width: 280px; }
+        .property-popup h3 { margin-bottom: 8px; color: #1a1a1a; font-size: 14px; }
+        .property-popup .price { font-size: 18px; font-weight: bold; color: #2563eb; margin-bottom: 8px; }
+        .property-popup .details { font-size: 13px; color: #666; margin-bottom: 8px; }
+        .property-popup .open-house { background: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; display: inline-block; margin-bottom: 8px; }
+        .property-popup a { color: #2563eb; text-decoration: none; font-size: 13px; }
+        .property-popup a:hover { text-decoration: underline; }
+        .legend { 
+            position: fixed; 
+            bottom: 20px; 
+            left: 20px; 
+            background: white; 
+            padding: 12px 16px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 13px;
+        }
+        .legend h4 { margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; margin: 4px 0; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 12px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 18px; }
+        .header .count { color: #666; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏠 Vegas Open Houses</h1>
+        <span class="count">Saturday, Feb 1 • 10 properties</span>
+    </div>
+    <div id="map"></div>
+    <div class="legend">
+        <h4>Price Range</h4>
+        <div class="legend-item"><span class="legend-dot" style="background: #22c55e;"></span> Under $400K</div>
+        <div class="legend-item"><span class="legend-dot" style="background: #eab308;"></span> $400K - $500K</div>
+        <div class="legend-item"><span class="legend-dot" style="background: #f97316;"></span> $500K - $600K</div>
+        <div class="legend-item"><span class="legend-dot" style="background: #ef4444;"></span> Over $600K</div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const properties = [
+            {
+                address: "3008 Lakeside Falls Dr",
+                price: 415000,
+                beds: 3, baths: 2, sqft: 1571,
+                openHouse: "11am - 2pm",
+                lat: 36.0847, lng: -115.2847,
+                url: "https://www.redfin.com/NV/Las-Vegas/3008-Lakeside-Falls-Dr-89117/home/29065342"
+            },
+            {
+                address: "10809 Garden Mist Dr #2094",
+                price: 318000,
+                beds: 2, baths: 2, sqft: 1096,
+                openHouse: "10am - 2pm",
+                lat: 36.1789, lng: -115.2456,
+                url: "https://www.redfin.com/NV/Las-Vegas/10809-Garden-Mist-Dr-89135/unit-2094/home/29113456"
+            },
+            {
+                address: "9212 Whitekirk Pl",
+                price: 530000,
+                beds: 3, baths: 2, sqft: 1836,
+                openHouse: "12pm - 3pm",
+                lat: 36.1634, lng: -115.3178,
+                url: "https://www.redfin.com/NV/Las-Vegas/9212-Whitekirk-Pl-89145/home/29098765"
+            },
+            {
+                address: "8805 Jeffreys St #1046",
+                price: 290000,
+                beds: 2, baths: 2, sqft: 1189,
+                openHouse: "11am - 3pm",
+                lat: 36.1523, lng: -115.3234,
+                url: "https://www.redfin.com/NV/Las-Vegas/8805-Jeffreys-St-89149/unit-1046/home/29087654"
+            },
+            {
+                address: "7255 Sunset Rd #2116",
+                price: 270000,
+                beds: 2, baths: 2, sqft: 1052,
+                openHouse: "1pm - 4pm",
+                lat: 36.0712, lng: -115.2189,
+                url: "https://www.redfin.com/NV/Las-Vegas/7255-Sunset-Rd-89113/unit-2116/home/29076543"
+            },
+            {
+                address: "2291 Horizon Ridge Pkwy #10152",
+                price: 315000,
+                beds: 2, baths: 2, sqft: 1230,
+                openHouse: "11am - 2pm",
+                lat: 36.0156, lng: -115.0834,
+                url: "https://www.redfin.com/NV/Henderson/2291-Horizon-Ridge-Pkwy-89052/unit-10152/home/29065678"
+            },
+            {
+                address: "1830 Buffalo Dr #2075",
+                price: 285000,
+                beds: 2, baths: 2, sqft: 1044,
+                openHouse: "12pm - 3pm",
+                lat: 36.1567, lng: -115.2567,
+                url: "https://www.redfin.com/NV/Las-Vegas/1830-Buffalo-Dr-89128/unit-2075/home/29054567"
+            },
+            {
+                address: "6868 Sky Pointe Dr #1088",
+                price: 340000,
+                beds: 3, baths: 2, sqft: 1312,
+                openHouse: "10am - 1pm",
+                lat: 36.2678, lng: -115.2456,
+                url: "https://www.redfin.com/NV/Las-Vegas/6868-Sky-Pointe-Dr-89131/unit-1088/home/29043567"
+            },
+            {
+                address: "10550 Alexander Rd #2127",
+                price: 359000,
+                beds: 3, baths: 2, sqft: 1456,
+                openHouse: "11am - 2pm",
+                lat: 36.2123, lng: -115.3012,
+                url: "https://www.redfin.com/NV/Las-Vegas/10550-Alexander-Rd-89129/unit-2127/home/29032456"
+            },
+            {
+                address: "917 Sable Chase Pl",
+                price: 489000,
+                beds: 3, baths: 2, sqft: 1678,
+                openHouse: "1pm - 4pm",
+                lat: 36.0234, lng: -115.1023,
+                url: "https://www.redfin.com/NV/Henderson/917-Sable-Chase-Pl-89011/home/29021345"
+            }
+        ];
+
+        // Initialize map centered on Vegas
+        const map = L.map('map').setView([36.12, -115.20], 11);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add padding for header
+        map.invalidateSize();
+        
+        function getPriceColor(price) {
+            if (price < 400000) return '#22c55e';
+            if (price < 500000) return '#eab308';
+            if (price < 600000) return '#f97316';
+            return '#ef4444';
+        }
+
+        function formatPrice(price) {
+            return '$' + price.toLocaleString();
+        }
+
+        properties.forEach(prop => {
+            const color = getPriceColor(prop.price);
+            
+            const marker = L.circleMarker([prop.lat, prop.lng], {
+                radius: 10,
+                fillColor: color,
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.9
+            }).addTo(map);
+
+            const popup = `
+                <div class="property-popup">
+                    <h3>${prop.address}</h3>
+                    <div class="price">${formatPrice(prop.price)}</div>
+                    <div class="open-house">🕐 Open ${prop.openHouse}</div>
+                    <div class="details">${prop.beds} bed • ${prop.baths} bath • ${prop.sqft.toLocaleString()} sqft</div>
+                    <a href="${prop.url}" target="_blank">View on Redfin →</a>
+                </div>
+            `;
+            
+            marker.bindPopup(popup);
+        });
+
+        // Adjust for header
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    </script>
+</body>
+</html>
