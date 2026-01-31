@@ -15,7 +15,6 @@
         .property-popup .details { font-size: 13px; color: #666; margin-bottom: 8px; }
         .property-popup .features { font-size: 12px; color: #888; margin-bottom: 8px; font-style: italic; }
         .property-popup .open-house { background: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; display: inline-block; margin-bottom: 8px; }
-        .property-popup .by-appt { background: #6366f1; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; display: inline-block; margin-bottom: 8px; }
         .property-popup a { color: #2563eb; text-decoration: none; font-size: 13px; }
         .property-popup a:hover { text-decoration: underline; }
         .legend { 
@@ -51,14 +50,15 @@
 </head>
 <body>
     <div class="header">
-        <h1>🏠 South Bay Houses</h1>
-        <span class="count">Saturday, Feb 1 • 4 properties</span>
+        <h1>🏠 South Bay Open Houses</h1>
+        <span class="count">Saturday, Jan 31 • 4 properties</span>
     </div>
     <div id="map"></div>
     <div class="legend">
-        <h4>Open House</h4>
-        <div class="legend-item"><span class="legend-dot" style="background: #22c55e;"></span> Scheduled</div>
-        <div class="legend-item"><span class="legend-dot" style="background: #6366f1;"></span> By Appointment</div>
+        <h4>Saturday Schedule</h4>
+        <div class="legend-item">🟢 12pm: Gates Ave</div>
+        <div class="legend-item">🟢 1pm: 1450 6th St</div>
+        <div class="legend-item">🟢 2pm: 1806 6th & Blossom</div>
     </div>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -69,8 +69,7 @@
                 price: 5300000,
                 beds: 6, baths: 5.5, sqft: 4537,
                 features: "Pool, spa, outdoor fireplace",
-                openHouse: "1pm - 4pm",
-                byAppt: false,
+                openHouse: "Sat 1pm - 4pm",
                 lat: 33.8847, lng: -118.4033,
                 url: "https://www.redfin.com/CA/Manhattan-Beach/1450-6th-St-90266/home/6704501"
             },
@@ -79,8 +78,7 @@
                 price: 5899000,
                 beds: 5, baths: 5.5, sqft: 5080,
                 features: "New construction 2025",
-                openHouse: "12pm - 4pm",
-                byAppt: false,
+                openHouse: "Sat 12pm - 4pm",
                 lat: 33.8892, lng: -118.4089,
                 url: "https://www.redfin.com/CA/Manhattan-Beach/1612-Gates-Ave-90266/home/6702054"
             },
@@ -89,8 +87,7 @@
                 price: 6350000,
                 beds: 6, baths: 7, sqft: 5000,
                 features: "New construction 2026, custom build",
-                openHouse: "By Appointment",
-                byAppt: true,
+                openHouse: "Sat 2pm - 4pm",
                 lat: 33.8873, lng: -118.4033,
                 url: "https://www.redfin.com/CA/Manhattan-Beach/1806-6th-St-90266/home/6702446"
             },
@@ -98,11 +95,10 @@
                 address: "1304 Blossom Ln, Redondo Beach",
                 price: 2899000,
                 beds: 5, baths: 5, sqft: 2958,
-                features: "New construction 2026, condo",
-                openHouse: "By Appointment",
-                byAppt: true,
+                features: "New construction, feels like single-family",
+                openHouse: "Sat 2pm - 4pm",
                 lat: 33.8712, lng: -118.3856,
-                url: "https://www.zillow.com/homedetails/1304-Blossom-Ln-Redondo-Beach-CA-90278/459981812_zpid/"
+                url: "https://www.redfin.com/CA/Redondo-Beach/1304-Blossom-Ln-90278/home/200201037"
             }
         ];
 
@@ -119,11 +115,9 @@
         }
 
         properties.forEach(prop => {
-            const color = prop.byAppt ? '#6366f1' : '#22c55e';
-            
             const marker = L.circleMarker([prop.lat, prop.lng], {
                 radius: 12,
-                fillColor: color,
+                fillColor: '#22c55e',
                 color: '#fff',
                 weight: 2,
                 opacity: 1,
@@ -141,18 +135,15 @@
 
             let featuresHtml = prop.features ? `<div class="features">${prop.features}</div>` : '';
             let priceHtml = prop.price ? `<div class="price">${formatPrice(prop.price)}</div>` : '';
-            
-            const openHouseClass = prop.byAppt ? 'by-appt' : 'open-house';
-            const openHouseIcon = prop.byAppt ? '📅' : '🕐';
 
             const popup = `
                 <div class="property-popup">
                     <h3>${prop.address}</h3>
                     ${priceHtml}
-                    <div class="${openHouseClass}">${openHouseIcon} ${prop.openHouse}</div>
+                    <div class="open-house">🕐 ${prop.openHouse}</div>
                     ${detailsHtml}
                     ${featuresHtml}
-                    <a href="${prop.url}" target="_blank">View listing →</a>
+                    <a href="${prop.url}" target="_blank">View on Redfin →</a>
                 </div>
             `;
             
