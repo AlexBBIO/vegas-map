@@ -212,7 +212,8 @@
                 prop.sqft.toLocaleString() + ' sqft'
             ].join(' • ');
 
-            const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${prop.lat},${prop.lng}`;
+            const fullAddress = encodeURIComponent(`${prop.address}, ${prop.city}, CA`);
+            const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${fullAddress}`;
 
             const popup = `
                 <div class="property-popup">
