@@ -66,43 +66,43 @@
         const properties = [
             {
                 address: "1450 6th St, Manhattan Beach",
-                price: null,
+                price: 5300000,
                 beds: 6, baths: 5.5, sqft: 4537,
-                features: "Pool",
+                features: "Pool, spa, outdoor fireplace",
                 openHouse: "1pm - 4pm",
                 byAppt: false,
                 lat: 33.8847, lng: -118.4033,
-                url: "https://www.redfin.com/CA/Manhattan-Beach/1450-6th-St-90266/home/6809051"
+                url: "https://www.redfin.com/CA/Manhattan-Beach/1450-6th-St-90266/home/6704501"
             },
             {
                 address: "1612 Gates Ave, Manhattan Beach",
-                price: null,
-                beds: 5, baths: 6, sqft: 5080,
+                price: 5899000,
+                beds: 5, baths: 5.5, sqft: 5080,
                 features: "New construction 2025",
                 openHouse: "12pm - 4pm",
                 byAppt: false,
                 lat: 33.8892, lng: -118.4089,
-                url: "https://www.redfin.com/CA/Manhattan-Beach/1612-Gates-Ave-90266/home/6808234"
+                url: "https://www.redfin.com/CA/Manhattan-Beach/1612-Gates-Ave-90266/home/6702054"
             },
             {
                 address: "1806 6th St, Manhattan Beach",
-                price: null,
-                beds: 6, baths: null, sqft: null,
-                features: "New construction, no compromises",
+                price: 6350000,
+                beds: 6, baths: 7, sqft: 5000,
+                features: "New construction 2026, custom build",
                 openHouse: "By Appointment",
                 byAppt: true,
                 lat: 33.8873, lng: -118.4033,
-                url: "https://www.redfin.com/CA/Manhattan-Beach/1806-6th-St-90266/home/6809123"
+                url: "https://www.redfin.com/CA/Manhattan-Beach/1806-6th-St-90266/home/6702446"
             },
             {
                 address: "1304 Blossom Ln, Redondo Beach",
-                price: null,
-                beds: null, baths: null, sqft: null,
-                features: null,
+                price: 2899000,
+                beds: 5, baths: 5, sqft: 2958,
+                features: "New construction 2026, condo",
                 openHouse: "By Appointment",
                 byAppt: true,
                 lat: 33.8712, lng: -118.3856,
-                url: "https://www.redfin.com/CA/Redondo-Beach/1304-Blossom-Ln-90278/home/6798234"
+                url: "https://www.zillow.com/homedetails/1304-Blossom-Ln-Redondo-Beach-CA-90278/459981812_zpid/"
             }
         ];
 
@@ -152,7 +152,7 @@
                     <div class="${openHouseClass}">${openHouseIcon} ${prop.openHouse}</div>
                     ${detailsHtml}
                     ${featuresHtml}
-                    <a href="${prop.url}" target="_blank">View on Redfin →</a>
+                    <a href="${prop.url}" target="_blank">View listing →</a>
                 </div>
             `;
             
